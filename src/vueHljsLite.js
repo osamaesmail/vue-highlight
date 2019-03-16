@@ -4,7 +4,7 @@ import vueHljs from './components/VueHljs'
 export default {
   install: function (Vue,options)
   {
-    options = Object.assign({ignoreIllegals: false, continuation: false, language: '', theme: '', numbers: false, rounded: false, inline: false, tag: 'pre'}, options)
+    options = Object.assign({autoDetection: false, ignoreIllegals: false, continuation: false, language: '', theme: '', numbers: false, inline: false, tag: 'pre'}, options)
     Vue.component('hljs', vueHljs)
     window.hljs = hljs
     require('highlightjs-line-numbers.js')

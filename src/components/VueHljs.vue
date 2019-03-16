@@ -9,7 +9,6 @@ export default {
     language: String,
     theme: String,
     numbers: Boolean,
-    rounded: Boolean,
     inline: Boolean,
     tag: String,
     name: String
@@ -20,6 +19,9 @@ export default {
     }
   },
   computed: {
+    cAutoDetection () {
+        return this.$vueHljs.autoDetection;
+    },
     cIgnoreIllegals () {
       return this.ignoreIllegals ? this.ignoreIllegals : this.$vueHljs.ignoreIllegals
     },
@@ -35,9 +37,6 @@ export default {
     cNumbers () {
       return this.numbers ? this.numbers : this.$vueHljs.numbers
     },
-    cRounded () {
-      return this.rounded || this.$vueHljs.rounded ? 'vue-hljs-rounded' : ''
-    },
     cInline () {
       return this.inline || this.$vueHljs.inline ? 'vue-hljs-inline' : ''
     },
@@ -49,14 +48,15 @@ export default {
         'vue-hljs',
         this.cTheme,
         this.cInline,
-        this.cRounded
       ].join(' ')
     }
   },
   mounted () {
     let html = this.$refs.code.innerHTML
     this.$vueHljs.codes[this.name] = html
-    html = this.$vueHljs.hljs.highlight(
+    html = this.cAutoDetection
+      ? this.$vueHljs.highlightAuto(html).value
+      : this.$vueHljs.hljs.highlight(
       this.cLanguage,
       this.$refs.code.innerHTML,
       this.cIgnoreIllegals,
@@ -76,9 +76,6 @@ export default {
     overflow: hidden;
     &.vue-hljs-inline {
         display: inline-flex;
-    }
-    &.vue-hljs-rounded {
-        border-radius: 4px;
     }
     .hljs-ln td.hljs-ln-numbers {
         text-align: center;
